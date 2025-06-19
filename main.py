@@ -1,5 +1,5 @@
 from typing import List
-from products import Product
+from products import Product, NonStockedProduct, LimitedProduct
 from store import Store
 
 
