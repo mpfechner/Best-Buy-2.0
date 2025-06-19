@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+
+# macOS System Files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# JetBrains (PyCharm, IntelliJ, WebStorm etc.)
+.idea/
+
+# Logs
+*.log
+
+# Python egg stuff
+*.egg-info/
+*.egg
+
+# Backup files
+*.swp
+*.bak
+*~
+
+# Optional: compiled C extensions
+*.so
