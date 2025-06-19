@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from products import Product, NonStockedProduct, LimitedProduct
 from store import Store
 
@@ -46,7 +46,7 @@ def list_products(store: Store) -> None:
     """
     print("\nAvailable products:")
     for product in store.get_all_products():
-        print(product.show())
+        print(product)  # uses __str__ now
 
 
 def show_total_quantity(store: Store) -> None:
@@ -67,12 +67,12 @@ def make_order(store: Store) -> None:
     Args:
         store (Store): The store to order from.
     """
-    shopping_list: List[tuple[Product, int]] = []
+    shopping_list: List[Tuple[Product, int]] = []
     products = store.get_all_products()
 
     print("\nEnter the number of the product and quantity to order.")
     for i, product in enumerate(products):
-        print(f"{i + 1}. {product.show()}")
+        print(f"{i + 1}. {product}")  # uses __str__ now
 
     while True:
         try:
@@ -91,7 +91,7 @@ def make_order(store: Store) -> None:
     try:
         total_price = store.order(shopping_list)
         print(f"\nOrder placed. Total cost: {total_price} dollars.")
-    except Exception as order_error:  # noqa: W0703
+    except Exception as order_error:
         print(f"Error placing order: {order_error}")
 
 
@@ -101,6 +101,8 @@ def main() -> None:
         Product("MacBook Air M2", 1450, 100),
         Product("Bose QuietComfort Earbuds", 250, 500),
         Product("Google Pixel 7", 500, 250),
+        NonStockedProduct("Windows License", 125),
+        LimitedProduct("Shipping", 10, 250, maximum=1)
     ]
     store = Store(product_list)
     start(store)
