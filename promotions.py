@@ -1,5 +1,5 @@
+from __future__ import annotations  # Ermöglicht stringbasierte Type Hints
 from abc import ABC, abstractmethod
-from products import Product
 
 
 class Promotion(ABC):
@@ -11,7 +11,7 @@ class Promotion(ABC):
         self.name: str = name
 
     @abstractmethod
-    def apply_promotion(self, product: Product, quantity: int) -> float:
+    def apply_promotion(self, product: "Product", quantity: int) -> float:
         """
         Calculates the discounted price for a given quantity of product.
 
@@ -37,7 +37,7 @@ class PercentDiscount(Promotion):
         super().__init__(name)
         self.percent: float = percent
 
-    def apply_promotion(self, product: Product, quantity: int) -> float:
+    def apply_promotion(self, product: "Product", quantity: int) -> float:
         original_price = product.price * quantity
         discount = original_price * (self.percent / 100)
         return original_price - discount
@@ -51,7 +51,7 @@ class SecondHalfPrice(Promotion):
     def __init__(self, name: str):
         super().__init__(name)
 
-    def apply_promotion(self, product: Product, quantity: int) -> float:
+    def apply_promotion(self, product: "Product", quantity: int) -> float:
         full_price = product.price
         pairs = quantity // 2
         remaining = quantity % 2
@@ -67,7 +67,7 @@ class ThirdOneFree(Promotion):
     def __init__(self, name: str):
         super().__init__(name)
 
-    def apply_promotion(self, product: Product, quantity: int) -> float:
+    def apply_promotion(self, product: "Product", quantity: int) -> float:
         free_items = quantity // 3
         paid_items = quantity - free_items
         return paid_items * product.price
