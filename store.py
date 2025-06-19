@@ -4,10 +4,7 @@ from products import Product
 
 class Store:
     """
-    Represents a store containing a collection of products.
-
-    Attributes:
-        _products (List[Product]): The list of products in the store.
+    Represents a store that holds and manages a collection of products.
     """
 
     def __init__(self, products: List[Product]):
@@ -17,11 +14,11 @@ class Store:
         Args:
             products (List[Product]): Initial list of products in the store.
         """
-        self._products = products
+        self._products: List[Product] = products
 
     def add_product(self, product: Product) -> None:
         """
-        Adds a new product to the store.
+        Adds a product to the store.
 
         Args:
             product (Product): The product to add.
@@ -39,12 +36,12 @@ class Store:
 
     def get_total_quantity(self) -> int:
         """
-        Calculates the total quantity of all products in the store.
+        Calculates the total quantity of all active products in the store.
 
         Returns:
             int: Sum of all available product quantities.
         """
-        return sum(p.get_quantity() for p in self._products)
+        return sum(p.quantity for p in self.get_all_products())
 
     def get_all_products(self) -> List[Product]:
         """
@@ -57,19 +54,47 @@ class Store:
 
     def order(self, shopping_list: List[Tuple[Product, int]]) -> float:
         """
-        Processes a multi-product order.
+        Processes a customer's order.
 
         Args:
-            shopping_list (List[Tuple[Product, int]]): A list of (product, quantity) pairs.
+            shopping_list (List[Tuple[Product, int]]): A list of (product, quantity) tuples.
 
         Returns:
-            float: Total price of the order.
+            float: Total cost of the order.
 
         Raises:
-            Exception: If a product is inactive or quantity is unavailable.
+            Exception: If a product is inactive or lacks sufficient stock.
         """
-        # pylint: disable=R0201
         total = 0.0
         for product, quantity in shopping_list:
             total += product.buy(quantity)
         return total
+
+    def __contains__(self, product: Product) -> bool:
+        """
+        Allows checking if a product is in the store using the 'in' operator.
+
+        Args:
+            product (Product): The product to check.
+
+        Returns:
+            bool: True if product is in store, False otherwise.
+        """
+        return product in self._products
+
+    def __add__(self, other: object) -> 'Store':
+        """
+        Allows combining two stores using the '+' operator.
+
+        Args:
+            other (Store): Another Store instance.
+
+        Returns:
+            Store: A new Store containing products from both stores.
+
+        Raises:
+            TypeError: If other is not a Store.
+        """
+        if not isinstance(other, Store):
+            raise TypeError("Can only add another Store.")
+        return Store(self._products + other._products)
